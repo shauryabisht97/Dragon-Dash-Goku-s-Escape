@@ -2,13 +2,21 @@ let score = 0;
 let cross = true;
 let passedObstacle = false; // Flag to track if Goku passed an obstacle
 
-let audio_ingame = new Audio('music.mp3');
-let audio_gameover = new Audio('gameover.mp3');
+const audio_ingame = new Audio('music.mp3');
+const audio_gameover = new Audio('gameover.mp3');
 
 // Set in-game audio to loop
 audio_ingame.loop = true;
 
-document.onkeydown = function (e) {
+const goku = document.querySelector('.goku');
+const gameOver = document.querySelector('.gameOver');
+const obstacle = document.querySelector('.obstacle');
+const scoreCount = document.getElementById('scoreCount');
+const restartButton = document.querySelector('.restartButton');
+
+document.onkeydown = handleKeyDown;
+
+function handleKeyDown(e) {
     console.log("Key pressed: ", e.key);
 
     // Play in-game audio on first keypress
@@ -18,40 +26,45 @@ document.onkeydown = function (e) {
         });
     }
 
-    let goku = document.querySelector('.goku');
-    if (e.key === "ArrowUp") {
-        goku.classList.add('animateGoku');
-        setTimeout(() => {
-            goku.classList.remove('animateGoku');
-        }, 700);
-    }
-
-    if (e.key === "ArrowRight") {
-        let gokuX = parseInt(window.getComputedStyle(goku, null).getPropertyValue('left'));
-        goku.style.left = (gokuX + 112) + "px";
-    }
-
-    if (e.key === "ArrowLeft") {
-        let gokuX = parseInt(window.getComputedStyle(goku, null).getPropertyValue('left'));
-        goku.style.left = (gokuX - 112) + "px";
+    switch (e.key) {
+        case "ArrowUp":
+            if (!goku.classList.contains('animateGoku')) {
+                goku.classList.add('animateGoku');
+                setTimeout(() => {
+                    goku.classList.remove('animateGoku');
+                }, 700);
+            }
+            break;
+        case "ArrowRight":
+            moveGoku(112);
+            break;
+        case "ArrowLeft":
+            moveGoku(-112);
+            break;
     }
 }
 
-let gameInterval = setInterval(() => {
-    let goku = document.querySelector('.goku');
-    let gameOver = document.querySelector('.gameOver');
-    let obstacle = document.querySelector('.obstacle');
+function moveGoku(offset) {
+    let gokuX = parseInt(window.getComputedStyle(goku, null).getPropertyValue('left'));
+    goku.style.left = (gokuX + offset) + "px";
+}
 
-    let gx = parseInt(window.getComputedStyle(goku, null).getPropertyValue('left'));
-    let gy = parseInt(window.getComputedStyle(goku, null).getPropertyValue('top'));
-    let ox = parseInt(window.getComputedStyle(obstacle, null).getPropertyValue('left'));
-    let oy = parseInt(window.getComputedStyle(obstacle, null).getPropertyValue('top'));
+function updateScore(score) {
+    scoreCount.innerHTML = "Your Score = " + score;
+}
 
-    let offsetX = Math.abs(gx - ox);
-    let offsetY = Math.abs(gy - oy);
+function checkCollision() {
+    const gx = parseInt(window.getComputedStyle(goku, null).getPropertyValue('left'));
+    const gy = parseInt(window.getComputedStyle(goku, null).getPropertyValue('top'));
+    const ox = parseInt(window.getComputedStyle(obstacle, null).getPropertyValue('left'));
+    const oy = parseInt(window.getComputedStyle(obstacle, null).getPropertyValue('top'));
+
+    const offsetX = Math.abs(gx - ox);
+    const offsetY = Math.abs(gy - oy);
 
     if (offsetX < 73 && offsetY < 52) {
         gameOver.style.visibility = 'visible';
+        restartButton.style.visibility = 'visible';
         obstacle.classList.remove('obstacleDragon');
 
         // Stop in-game audio and play game over audio
@@ -63,9 +76,9 @@ let gameInterval = setInterval(() => {
         });
 
         // Stop further game logic after game over
-        clearInterval(gameInterval);
+        cancelAnimationFrame(gameLoop);
         document.onkeydown = null;
-    } else if (offsetX < 145 && cross) {
+    } else if (offsetX < 145 && gx < ox && cross) {
         score += 1;
         passedObstacle = true; // Goku successfully passed an obstacle
         updateScore(score);
@@ -79,7 +92,7 @@ let gameInterval = setInterval(() => {
             let animation_duration = parseFloat(window.getComputedStyle(obstacle, null).getPropertyValue('animation-duration'));
             let new_duration = animation_duration - 0.1;
             obstacle.style.animationDuration = new_duration + 's';
-            console.log('New animation duration', new_duration)
+            console.log('New animation duration', new_duration);
         }, 500);
     }
 
@@ -87,8 +100,43 @@ let gameInterval = setInterval(() => {
     if (passedObstacle) {
         passedObstacle = false;
     }
-}, 10);
 
-function updateScore(score) {
-    scoreCount.innerHTML = "Your Score = " + score;
+    // Continue the game loop
+    gameLoop = requestAnimationFrame(checkCollision);
+}
+
+// Start the game loop
+let gameLoop = requestAnimationFrame(checkCollision);
+
+function restartGame() {
+    score = 0;
+    cross = true;
+    passedObstacle = false;
+
+    // Hide game over message and restart button
+    gameOver.style.visibility = 'hidden';
+    restartButton.style.visibility = 'hidden';
+
+    // Reset Goku's position
+    goku.style.left = '12px';
+
+    // Reset obstacle position and animation
+    obstacle.style.animation = 'none';
+    obstacle.offsetHeight; // Trigger reflow
+    obstacle.style.animation = null;
+    obstacle.classList.add('obstacleDragon');
+
+    // Reset score display
+    updateScore(score);
+
+    // Start game logic again
+    document.onkeydown = handleKeyDown;
+    gameLoop = requestAnimationFrame(checkCollision);
+
+    // Play in-game audio and stop game over audio
+    audio_gameover.pause();
+    audio_gameover.currentTime = 0; // Reset game over audio
+    audio_ingame.play().catch(error => {
+        console.error("Error playing in-game audio:", error);
+    });
 }
