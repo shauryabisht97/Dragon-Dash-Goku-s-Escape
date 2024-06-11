@@ -5,15 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dragon Dash: Goku's Escape</title>
     <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
+    <script src="script.js" defer></script>
 </head>
 <body>
-    <div class="gameContainer">
-        <div class="gameStartButton" onclick="startGame()">Start Game</div>
-        <div class="gameOver">Game Over</div>
-        <div class="goku"></div>
-        <div id="scoreCount">Your Score: 0</div>
-        <div class="obstacle obstacleDragon"></div>
+    <div class="gameContainer" role="main">
+        <div class="gameOver" aria-hidden="true">Game Over</div>
+        <div class="goku" role="img" aria-label="Goku character"></div>
+        <div id="scoreCount" aria-live="polite">Your Score: 0</div>
+        <div class="obstacle obstacleDragon" role="img" aria-label="Dragon obstacle"></div>
+        <button class="restartButton" onclick="restartGame()">Restart Game</button>
     </div>
 </body>
 </html>
