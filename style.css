@@ -4,12 +4,12 @@
     box-sizing: border-box;
 }
 
-
 body {
     background-color: red;
     overflow: hidden;
     font-family: sans-serif;
 }
+
 
 .gameContainer {
     background-image: url('background.jpeg');
@@ -31,6 +31,7 @@ body {
     left: 12px;
 }
 
+
 .obstacle {
     background-image: url('dragon.png');
     background-repeat: no-repeat;
@@ -51,6 +52,7 @@ body {
 .obstacleDragon {
     animation: obstacleMove 3s linear infinite;
 }
+
 
 .gameOver {
     position: absolute;
@@ -77,6 +79,21 @@ body {
     padding: 10px;
     background-color: rgba(0, 0, 0, 0.5);
     border-radius: 10px;
+}
+
+
+.restartButton {
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.5rem;
+    padding: 10px 20px;
+    background-color: #d2f122;
+    border: none;
+    border-radius: 5px;
+    visibility: hidden;
+    cursor: pointer;
 }
 
 
@@ -171,6 +188,22 @@ body {
     border-radius: 10px;
 }
 
+/* Restart button */
+.restartButton {
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.5rem;
+    visibility: hidden;
+    padding: 10px 20px;
+    border: none;
+    background-color: #d2f122;
+    color: black;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
 /* Score counter */
 #scoreCount {
     color: #d2f122;
@@ -184,19 +217,17 @@ body {
     border-radius: 10px;
 }
 
-/* Restart button */
-.restartButton {
+/* Best score counter */
+#bestScoreCount {
+    color: #d2f122;
+    font-weight: bold;
     position: absolute;
-    top: 60%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 1.5rem;
-    padding: 10px 20px;
-    background-color: #d2f122;
-    border: none;
-    border-radius: 5px;
-    visibility: hidden;
-    cursor: pointer;
+    right: 45px;
+    top: 70px;
+    border: 2px solid black;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
 }
 
 /* Keyframes for Goku's jump */
@@ -218,3 +249,4 @@ body {
         left: -10vw;
     }
 }
+
