@@ -1,120 +1,3 @@
-/* * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    background-color: red;
-    overflow: hidden;
-    font-family: sans-serif;
-}
-
-
-.gameContainer {
-    background-image: url('background.jpeg');
-    background-repeat: no-repeat;
-    background-size: cover;
-    width: 100vw;
-    height: 100vh;
-    position: relative;
-}
-
-.goku {
-    background-image: url('goku.png');
-    background-repeat: no-repeat;
-    background-size: contain;
-    width: 120px;
-    height: 120px;
-    position: absolute;
-    bottom: 5px;
-    left: 12px;
-}
-
-
-.obstacle {
-    background-image: url('dragon.png');
-    background-repeat: no-repeat;
-    background-size: contain;
-    width: 150px;
-    height: 150px;
-    position: absolute;
-    top: 83%;
-    left: 85vw;
-}
-
-
-.animateGoku {
-    animation: gokuJump 0.6s linear;
-}
-
-
-.obstacleDragon {
-    animation: obstacleMove 3s linear infinite;
-}
-
-
-.gameOver {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 3rem;
-    text-align: center;
-    color: white;
-    visibility: hidden;
-    background-color: rgba(0, 0, 0, 0.7);
-    padding: 20px;
-    border-radius: 10px;
-}
-
-
-#scoreCount {
-    color: #d2f122;
-    font-weight: bold;
-    position: absolute;
-    right: 45px;
-    top: 31px;
-    border: 2px solid black;
-    padding: 10px;
-    background-color: rgba(0, 0, 0, 0.5);
-    border-radius: 10px;
-}
-
-
-.restartButton {
-    position: absolute;
-    top: 60%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 1.5rem;
-    padding: 10px 20px;
-    background-color: #d2f122;
-    border: none;
-    border-radius: 5px;
-    visibility: hidden;
-    cursor: pointer;
-}
-
-
-@keyframes gokuJump {
-    0%, 100% {
-        bottom: 5px;
-    }
-    50% {
-        bottom: 175px;
-    }
-}
-
-@keyframes obstacleMove {
-    0% {
-        left: 100vw;
-    }
-    100% {
-        left: -10vw;
-    }
-} */
-
 /* Reset default browser styles */
 * {
     margin: 0;
@@ -126,7 +9,7 @@ body {
 body {
     background-color: red;
     overflow: hidden;
-    font-family: sans-serif;
+    font-family: 'Arial', sans-serif;
 }
 
 /* Main game container */
@@ -137,6 +20,21 @@ body {
     width: 100vw;
     height: 100vh;
     position: relative;
+}
+
+/* Game title */
+.gameTitle {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #d2f122;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 10px;
+    border: 2px solid black;
+    border-radius: 10px;
 }
 
 /* Goku character */
@@ -202,32 +100,33 @@ body {
     color: black;
     border-radius: 5px;
     cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.restartButton:hover {
+    background-color: #c4d21e;
+}
+
+/* Score container */
+.scoreContainer {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
 }
 
 /* Score counter */
-#scoreCount {
-    color: #d2f122;
+#scoreCount, #bestScoreCount {
+    color: white;
     font-weight: bold;
-    position: absolute;
-    right: 45px;
-    top: 31px;
     border: 2px solid black;
     padding: 10px;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.7);
     border-radius: 10px;
-}
-
-/* Best score counter */
-#bestScoreCount {
-    color: #d2f122;
-    font-weight: bold;
-    position: absolute;
-    right: 45px;
-    top: 70px;
-    border: 2px solid black;
-    padding: 10px;
-    background-color: rgba(0, 0, 0, 0.5);
-    border-radius: 10px;
+    text-align: center;
+    font-size: 1.2rem;
+    min-width: 150px;
 }
 
 /* Keyframes for Goku's jump */
@@ -249,4 +148,3 @@ body {
         left: -10vw;
     }
 }
-
